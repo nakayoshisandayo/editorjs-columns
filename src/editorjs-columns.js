@@ -11,7 +11,7 @@
  * @description Tool's input and output data format
  */
 
-import { v4 as uuidv4 } from "uuid";
+import {v4 as uuidv4} from "uuid";
 import Swal from "sweetalert2";
 
 import icon from "./editorjs-columns.svg";
@@ -101,6 +101,12 @@ class EditorJsColumns {
 				label : this.api.i18n.t("3 Columns"),
 				onActivate : () => {this._updateCols(3)}
 			},
+			// add 4 columns
+			{
+				icon : "4",
+				label : this.api.i18n.t("4 Columns"),
+				onActivate : () => {this._updateCols(4)}
+			},
 			{
 				icon : "R",
 				label : this.api.i18n.t("Roll Columns"),
@@ -118,33 +124,38 @@ class EditorJsColumns {
 	}
 
 	async _updateCols(num) {
-		// Should probably update to make number dynamic... but this will do for now
-		if (num == 2) {
-			if (this.editors.numberOfColumns == 3) {
-				let resp = await Swal.fire({
-					title: this.api.i18n.t("Are you sure?"),
-					text: this.api.i18n.t("This will delete Column 3!"),
-					icon: "warning",
-					showCancelButton: true,
-					cancelButtonText: this.api.i18n.t("Cancel"),
-					confirmButtonColor: "#3085d6",
-					cancelButtonColor: "#d33",
-					confirmButtonText: this.api.i18n.t("Yes, delete it!"),
-				});
+		const currentColumns = this.editors.numberOfColumns;
 
-				if (resp.isConfirmed) {
-					this.editors.numberOfColumns = 2;
-					this.data.cols.pop();
-					this.editors.cols.pop();
-					this._rerender();
-				}
+		if (num === currentColumns) {
+			return; // カラム数が同じ場合は何もしない
+		}
+
+		if (num < currentColumns) {
+			// カラムを減らす場合のロジック
+			let resp = await Swal.fire({
+				title: this.api.i18n.t("Are you sure?"),
+				text: this.api.i18n.t("This will delete the column(s)!"),
+				icon: "warning",
+				showCancelButton: true,
+				cancelButtonText: this.api.i18n.t("Cancel"),
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: this.api.i18n.t("Yes, delete it!"),
+			});
+
+			if (!resp.isConfirmed) {
+				return;
 			}
+
+			// 不要なカラムのデータを削除
+			this.data.cols = this.data.cols.slice(0, num);
 		}
-		if (num == 3) {
-			this.editors.numberOfColumns = 3;
-			this._rerender();
-			// console.log(3);
-		}
+
+		// 新しいカラム数を設定
+		this.editors.numberOfColumns = num;
+
+		// カラムを再描画
+		this._rerender();
 	}
 
 	async _rerender() {
@@ -291,8 +302,7 @@ class EditorJsColumns {
 		if(!this.readOnly){
 			// console.log("Saving");
 			for (let index = 0; index < this.editors.cols.length; index++) {
-				let colData = await this.editors.cols[index].save();
-				this.data.cols[index] = colData;
+				this.data.cols[index] = await this.editors.cols[index].save();
 			}
 		}
 		return this.data;
