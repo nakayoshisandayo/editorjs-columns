@@ -149,6 +149,8 @@ class EditorJsColumns {
 
 			// 不要なカラムのデータを削除
 			this.data.cols = this.data.cols.slice(0, num);
+			// 不要なエディタインスタンスも配列から削除します
+			this.editors.cols.splice(num);
 		}
 
 		// 新しいカラム数を設定
