@@ -223,41 +223,42 @@ class EditorJsColumns {
 		this.colWrapper.addEventListener('paste', (event) => {
 			// event.preventDefault();
 			event.stopPropagation();
-		}, true);   
+		}, true);
 
 
+		//改行コードが効かないので削除
 
-		this.colWrapper.addEventListener('keydown', (event) => {
-
-			// if (event.key === "Enter" && event.altKey) {
-			// 	console.log("ENTER ALT Captured")
-			// 	console.log(event.target)
-
-			// 	// let b = event.target.dispatchEvent(new KeyboardEvent('keyup',{'key':'a'}));
-
-			// 	event.target.innerText += "Aß"
-
-			// 	// console.log(b)
-			// }
-			// else 
-			if (event.key === "Enter") {
-				event.preventDefault();
-				event.stopImmediatePropagation();
-				event.stopPropagation();
-				
-				// console.log("ENTER Captured")
-				// this.api.blocks.insertNewBlock({type : "alert"});
-				// console.log("Added Block")
-			}
-			if (event.key === "Tab") {
-				// event.stopImmediatePropagation();
-				event.preventDefault();
-				event.stopImmediatePropagation();
-				event.stopPropagation();
-				
-				// console.log("TAB Captured")
-			}
-		});
+		// this.colWrapper.addEventListener('keydown', (event) => {
+		//
+		// 	// if (event.key === "Enter" && event.altKey) {
+		// 	// 	console.log("ENTER ALT Captured")
+		// 	// 	console.log(event.target)
+		//
+		// 	// 	// let b = event.target.dispatchEvent(new KeyboardEvent('keyup',{'key':'a'}));
+		//
+		// 	// 	event.target.innerText += "Aß"
+		//
+		// 	// 	// console.log(b)
+		// 	// }
+		// 	// else
+		// 	if (event.key === "Enter") {
+		// 		event.preventDefault();
+		// 		event.stopImmediatePropagation();
+		// 		event.stopPropagation();
+		//
+		// 		// console.log("ENTER Captured")
+		// 		// this.api.blocks.insertNewBlock({type : "alert"});
+		// 		// console.log("Added Block")
+		// 	}
+		// 	if (event.key === "Tab") {
+		// 		// event.stopImmediatePropagation();
+		// 		event.preventDefault();
+		// 		event.stopImmediatePropagation();
+		// 		event.stopPropagation();
+		//
+		// 		// console.log("TAB Captured")
+		// 	}
+		// });
 
 
 
